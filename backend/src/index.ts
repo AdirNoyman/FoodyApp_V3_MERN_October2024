@@ -1,9 +1,11 @@
 import express, {Request, Response} from "express"
 import cors from "cors"
 import "dotenv/config"
+import mongoose from "mongoose"
 
 const app = express()
 
+// Connect to the Database
 
 // MIDDLEWARE
 app.use(express.json())
@@ -15,7 +17,16 @@ app.get("/", async (req: Request, res: Response) => {
 
 })
 
-app.listen(7001, () => {
+try {   
 
-    console.log("Server started on localhost:7000 😎🤘")
-})
+    mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string)
+    console.log("Connected successfully to the database 😎🤘")
+    app.listen(7001, () => {
+
+        console.log("Server started on localhost:7000 🚀")
+    })
+} catch (error) {
+
+    console.log("Error starting the app 😫 ", error)
+    
+}

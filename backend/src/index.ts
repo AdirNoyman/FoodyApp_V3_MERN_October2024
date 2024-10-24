@@ -18,7 +18,7 @@ try {
   mongoose.connect(process.env.MONGODB_CONNECTION_STRING as string);
   console.log('Connected successfully to the database 😎🤘');
   app.listen(7001, () => {
-    console.log('Server started on localhost:7000 🚀');
+    console.log('Server started on localhost:7001 🚀');
   });
 } catch (error) {
   console.log('Error starting the app 😫 ', error);

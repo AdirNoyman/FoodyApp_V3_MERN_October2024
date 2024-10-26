@@ -7,12 +7,12 @@ const createUser = async (req: Request, res: Response)  => {
     const { auth0Id } = req.body;
     const isUserExist = await User.findOne({ auth0Id });
 
-    // If user exists - do nothing
+    // If user exists - do nothing and return
     if (isUserExist) {
       return res.status(200).send();
     }
 
-    // Create the user
+    // User does not exist -> Create the user
     const newUser = new User(req.body);
 
     await newUser.save();

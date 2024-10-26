@@ -1,3 +1,4 @@
+import { useCreateUser } from '@/api/UserApi';
 import { AppState, Auth0Provider, User } from '@auth0/auth0-react';
 import React from 'react';
 
@@ -6,6 +7,7 @@ type Props = {
 };
 
 const Auth0ProviderWithNavigate = ({ children }: Props) => {
+  const { createUser } = useCreateUser();
   const domain = import.meta.env.VITE_AUTH0_DOMAIN;
   const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
   const redirectUri = import.meta.env.VITE_AUTH0_CALLBACK_URL;
@@ -16,7 +18,17 @@ const Auth0ProviderWithNavigate = ({ children }: Props) => {
 
   // This redirect function will be called when the user is redirected back from Auth0 to our app. AppState will hold information like the current url the user is on before he was sent to Auth0. The User will hold information about the user
   const onRedirectCallback = (appState?: AppState, user?: User) => {
-    console.log('User', user);
+    
+    console.log("On redirect call back was called 🤓")
+    // user sub = the user Id
+    if (user?.sub && user?.email) {
+
+      createUser({auth0Id: user.sub, email: user.email})
+
+
+    }
+
+    
   };
 
   return (

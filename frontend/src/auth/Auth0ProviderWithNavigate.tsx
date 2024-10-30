@@ -1,36 +1,37 @@
-import { AppState, Auth0Provider, User } from '@auth0/auth0-react';
+import {  Auth0Provider } from '@auth0/auth0-react';
 import React from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 type Props = {
   children: React.ReactNode;
 };
 
 const Auth0ProviderWithNavigate = ({ children }: Props) => {
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
-  
   const domain = import.meta.env.VITE_AUTH0_DOMAIN;
   const clientId = import.meta.env.VITE_AUTH0_CLIENT_ID;
   const redirectUri = import.meta.env.VITE_AUTH0_CALLBACK_URL;
+  const audience = import.meta.env.VITE_AUTH0_AUDIENCE;
 
-  if (!domain || !clientId || !redirectUri) {
+  console.log("Audience env variable in the frontend => ", audience)
+
+  if (!domain || !clientId || !redirectUri || !audience) {
     throw new Error('Unable to initialize auth 🤷‍♂️😫');
   }
 
   // This redirect function will be called when the user is redirected back from Auth0 to our app. AppState will hold information like the current url the user is on before he was sent to Auth0. The User will hold information about the user
-  const onRedirectCallback = (appState?: AppState, user?: User) => {
+  const onRedirectCallback = () => {
     console.log('On redirect call back was called 🤓');
     // After the user logged in, redirect him to auth staging page
-    navigate("/auth-callback")
-    
+    navigate('/auth-callback');
   };
 
   return (
     <Auth0Provider
       domain={domain}
       clientId={clientId}
-      authorizationParams={{ redirect_uri: redirectUri }}
+      authorizationParams={{ redirect_uri: redirectUri, audience }}
       onRedirectCallback={onRedirectCallback}
     >
       {children}

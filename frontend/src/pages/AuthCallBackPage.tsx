@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 
 const AuthCallBackPage = () => {
 
+  console.log("I'm in the auth callback page 🤓")
+
   // We are using useRef and not useState because useRef won't cause the page to rerender
   const hasCreatedUserAlready = useRef(false);
   const navigate = useNavigate();
@@ -12,6 +14,7 @@ const AuthCallBackPage = () => {
   const { createUser } = useCreateUser();
 
   useEffect(() => {
+    
     // user sub = the user Id
     if (user?.sub && user?.email && !hasCreatedUserAlready.current) {
       createUser({ auth0Id: user.sub, email: user.email });

@@ -10,6 +10,8 @@ type CreateUser = {
 
 // Create and export the create user hook
 export const useCreateUser = () => {
+  console.log('Going in to createUser 🙋‍♂️');
+
   const { getAccessTokenSilently } = useAuth0();
   const createNewUserRequest = async (user: CreateUser) => {
     // Get the access token provided by Auth0 for this user (After he logged in)

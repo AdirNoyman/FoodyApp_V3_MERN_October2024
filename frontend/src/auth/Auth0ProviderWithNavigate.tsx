@@ -1,4 +1,4 @@
-import {  Auth0Provider } from '@auth0/auth0-react';
+import { Auth0Provider } from '@auth0/auth0-react';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -14,7 +14,7 @@ const Auth0ProviderWithNavigate = ({ children }: Props) => {
   const redirectUri = import.meta.env.VITE_AUTH0_CALLBACK_URL;
   const audience = import.meta.env.VITE_AUTH0_AUDIENCE;
 
-  console.log("Audience env variable in the frontend => ", audience)
+  console.log('Audience env variable in the frontend => ', audience);
 
   if (!domain || !clientId || !redirectUri || !audience) {
     throw new Error('Unable to initialize auth 🤷‍♂️😫');

@@ -1,7 +1,7 @@
-import { Request, Response } from "express";
-import User from "../models/user";
+import { Request, Response } from 'express';
+import User from '../models/user';
 
-const createUser = async (req: Request, res: Response)  => {
+const createUser = async (req: Request, res: Response) => {
   // Make sure the user doesn't already exist in my app DB
   try {
     const { auth0Id } = req.body;
@@ -26,8 +26,29 @@ const createUser = async (req: Request, res: Response)  => {
   }
 };
 
-export default {
-  createUser
+const updateUser = async (req: Request, res: Response) => {
+  try {
+    // Get the data from the form the user submitted
+    const { name, addressLine, country, city } = req.body;
+
+    const user = await User.findById(req.userId);
+
+    if (!user) res.status(404).json({ message: 'User not found 🤷‍♂️' });
+
+    user!.name = name;
+    user!.addressLine = addressLine;
+    user!.city = city;
+    user!.country = country;
+    await user!.save();
+    res.send(user);
+
+  } catch (error) {
+    console.log('Error trying to update user 😫');
+    res.status(500).json({ message: 'Error updating user 😫' });
+  }
 };
 
-
+export default {
+  createUser,
+  updateUser,
+};

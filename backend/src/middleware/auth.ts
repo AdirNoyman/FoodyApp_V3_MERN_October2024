@@ -21,6 +21,7 @@ export const jwtCheck = auth({
   tokenSigningAlg: 'RS256',
 });
 
+// Extract information from the users token
 export const jwtParse = async (
   req: Request,
   res: Response,

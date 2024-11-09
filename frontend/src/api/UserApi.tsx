@@ -8,7 +8,7 @@ type CreateUser = {
   email: string;
 };
 
-// Create and export the create user hook
+// CREATE USER hook
 export const useCreateUser = () => {
   console.log('Going in to createUser 🙋‍♂️');
 
@@ -38,4 +38,50 @@ export const useCreateUser = () => {
   } = useMutation(createNewUserRequest);
 
   return { createUser, isLoading, isError, isSuccess };
+};
+
+type UpdateUserProfileRequest = {
+  name: string;
+  addressLine: string;
+  city: string;
+  country: string;
+};
+
+// UPDATE USER hook
+export const useUpdateUserProfile = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  // update fetch request
+  const updateUserProfileRequest = async (
+    formaData: UpdateUserProfileRequest
+  ) => {
+    // Anytime a request to update the user is made, a request to get the token from Auth0 will be sent
+    const accessToken = await getAccessTokenSilently();
+    const response = await fetch(`${API_BASE_URL}/api/v1/users`, {
+      method: 'PUT',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formaData),
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to update user profile 😫');
+    }
+
+    return response.json();
+  };
+
+  // Make a call React query
+  const {
+    mutateAsync: updateUser,
+    isLoading,
+    // isError,
+    // isSuccess,
+    // error,
+    // reset,
+  } = useMutation(updateUserProfileRequest);
+
+  return { updateUser, isLoading };
 };

@@ -8,6 +8,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import LoadingButton from '@/components/LoadingButton';
@@ -16,10 +17,10 @@ import { Button } from '@/components/ui/button';
 const formSchema = z.object({
   // email will be readonly field
   email: z.string().optional(),
-  name: z.string().min(2, 'Name is required! 🤨'),
-  addressLine: z.string().min(2, 'Address is required! 🤨'),
-  city: z.string().min(2, 'City is required! 🤨'),
-  country: z.string().min(2, 'Country is required! 🤨'),
+  name: z.string().min(1, 'Name is required! 🤨'),
+  addressLine: z.string().min(1, 'Address is required! 🤨'),
+  city: z.string().min(1, 'City is required! 🤨'),
+  country: z.string().min(1, 'Country is required! 🤨'),
 });
 
 // Create a form data struct schema
@@ -70,6 +71,7 @@ const UserProfileForm = ({ onSave, isLoading }: Props) => {
               <FormControl>
                 <Input {...field} className="bg-white" />
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
@@ -79,11 +81,12 @@ const UserProfileForm = ({ onSave, isLoading }: Props) => {
             control={form.control}
             name="addressLine"
             render={({ field }) => (
-              <FormItem className='flex-1'>
+              <FormItem className="flex-1">
                 <FormLabel>Address</FormLabel>
                 <FormControl>
                   <Input {...field} className="bg-white" />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -91,11 +94,12 @@ const UserProfileForm = ({ onSave, isLoading }: Props) => {
             control={form.control}
             name="city"
             render={({ field }) => (
-              <FormItem className='flex-1'>
+              <FormItem className="flex-1">
                 <FormLabel>City</FormLabel>
                 <FormControl>
                   <Input {...field} className="bg-white" />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />
@@ -103,11 +107,12 @@ const UserProfileForm = ({ onSave, isLoading }: Props) => {
             control={form.control}
             name="country"
             render={({ field }) => (
-              <FormItem className='flex-1'>
+              <FormItem className="flex-1">
                 <FormLabel>Country</FormLabel>
                 <FormControl>
                   <Input {...field} className="bg-white" />
                 </FormControl>
+                <FormMessage />
               </FormItem>
             )}
           />

@@ -1,5 +1,5 @@
 import { useAuth0 } from '@auth0/auth0-react';
-import { useMutation } from 'react-query';
+import { useMutation, useQuery } from 'react-query';
 import { toast } from 'sonner';
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -7,6 +7,42 @@ const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 type CreateUser = {
   auth0Id: string;
   email: string;
+};
+
+// GET user hook
+export const useGetUser = () => {
+  const { getAccessTokenSilently } = useAuth0();
+
+  const getUserRequest = async () => {
+    const accessToken = await getAccessTokenSilently();
+
+    const response = await fetch(`${API_BASE_URL}/api/users`, {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch user 😫');
+    }
+    // return the user json as JS object
+    return response.json();
+  };
+
+  const {
+    data: currentUser,
+    isLoading,
+    error,
+  } = useQuery('fetchCurrentUser', getUserRequest);
+
+  if (error) {
+
+    toast.error(error.toString())
+  }
+
+  return {currentUser, isLoading}
 };
 
 // CREATE USER hook
